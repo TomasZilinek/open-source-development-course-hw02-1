@@ -16,6 +16,5 @@ def main():
     print(m1)
     print(m1 + m1)
 
-
 if __name__ == '__main__':
     main()

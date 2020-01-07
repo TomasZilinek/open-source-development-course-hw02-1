@@ -1,6 +1,10 @@
 # Useful doc on Python magic methods:
 # https://rszalski.github.io/magicmethods/
 import itertools
+import math
+
+
+# sorry I didn't really do the TODOs but it was already 0:05 -> 5 minutes after deadline and programming is not really the purpose of this HW, I hope you understand
 
 
 class Vector:
@@ -46,19 +50,31 @@ class Vector:
         return sum(self.d)
 
     def __setitem__(self, key, value):
-        if isinstance(key, Vector): raise ValueError('Redundant check to make conflict')
+        if key >= len(self.d):
+            self.d += [0] * (key - len(self.d) + 1)
+
         self.d[key] = value
+
+        return None
 
     def __cmp__(self, other):
         # TODO: implement, -1 if self < other, 0 if self == other, 1 if self > other
-        return -1
+        eq = false not in [i == j for i, j in zip(self.d, other.get())]
+
+        if eq:
+            return 0
+        else:
+            return -1 if length() < other.length() else 1
 
     def __neg__(self):
         return Vector([-x for x in self.d])
 
     def __reversed__(self):
-        # TODO: implement vector element reversal (hint: list(reversed(self.d)))
-        return Vector()
+        # TODO: implement reversed (hint: list(reversed(self.d))))
+        vec = Vector(list(reversed(self.d)))
+
+        for x in vec.get():
+            yield x
 
     def __add__(self, other):
         if isinstance(other, int):
@@ -70,11 +86,11 @@ class Vector:
     def __sub__(self, other):
         # TODO: implement vector subtraction, comment change to make conflict
         # you may use __add__() and negation, like return (-self + other)
-        return None
+        return self + (-other)
 
     def __mul__(self, other):
         if isinstance(other, int):
-            return None  # TODO: FIX
+            return Vector([x * other for x in self.d])
         elif isinstance(other, Vector):
             # TODO: add size checks
             if self.is_row == other.is_row:
@@ -107,7 +123,7 @@ class Vector:
         if len(self) == 0:
             raise ValueError('Undefined for zero-length vector')  # make return 0 instead of an exception
         # TODO: implement vector length comp. (hint: return math.sqrt(sum(x*x for x in self.d)))
-        return None
+        return math.sqrt(sum(x*x for x in self.d))
 
     def dot(self, other):
         # TODO: implement dot-product, i.e., a.b = \sum_i a[i]*b[i],
@@ -185,4 +201,3 @@ class Matrix:
         for i, j in self.index_iter():
             m[i][j] = m[i][j] + other[i][j]
         return m
-
